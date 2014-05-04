@@ -23,11 +23,12 @@ public class PuzzleTests {
 	@Test
 	public void testColums() {
 		for (int c : new Range(9)) {
-			Set<Integer> nums = new HashSet<>();
+			Set<Integer> nums = new HashSet<>(Range.rangeList(1,10));
 			for (int r : new Range(9)) {
-				nums.add(puzzle[r][c]);
+				nums.remove(puzzle[r][c]);
 			}
-			if (nums.size() != 9) {
+			if (nums.size() != 0) {
+				printDups(nums);
 				fail("Columns had duplicates");
 			}
 		}
@@ -36,11 +37,12 @@ public class PuzzleTests {
 	@Test
 	public void testRows() {
 		for (int r : new Range(9)) {
-			Set<Integer> nums = new HashSet<>();
+			Set<Integer> nums = new HashSet<>(Range.rangeList(1,10));
 			for (int c : new Range(9)) {
-				nums.add(puzzle[r][c]);
+				nums.remove(puzzle[r][c]);
 			}
-			if (nums.size() != 9) {
+			if (nums.size() != 0) {
+				printDups(nums);
 				fail("Rows had duplicates");
 			}
 		}
@@ -50,16 +52,26 @@ public class PuzzleTests {
 	public void testBoxes() {
 		for (int tr : new Range(3)) {
 			for (int tc : new Range(3)) {
-				Set<Integer> nums = new HashSet<>();
+				Set<Integer> nums = new HashSet<>(Range.rangeList(1, 10));
 				for (int r : new Range(3)) {
 					for (int c : new Range(3)) {
-						nums.add(puzzle[tr * 3 + r][tc * 3 + c]);
+						nums.remove(puzzle[tr * 3 + r][tc * 3 + c]);
 					}
 				}
-				if (nums.size() != 9) {
-					fail("Rows had duplicates");
+				if (nums.size() != 0) {
+					printDups(nums);
+					fail("Boxes had duplicates");
 				}
 			}
 		}
 	}
+	
+	
+	private void printDups(Set<Integer> nums) {
+		for (int i : nums) {
+			System.out.print(" "+i);
+		}
+		System.out.println();
+	}
+
 }

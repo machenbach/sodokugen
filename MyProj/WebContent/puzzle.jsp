@@ -40,7 +40,7 @@ font-weight:bold;
 		<% for (int r : new Range(3)) { %>
 			<tr>
 			<% for (int c : new Range(3)) { %>
-				<td><%= rnd.nextFloat() < .4 ? p.puzzleElement(tr * 3 + r, tc *3 + c) : " " %></td>
+				<td><%= p.puzzleElement(tr * 3 + r, tc *3 + c)  %></td>
 			<% } %>
 			</tr>
 		<% } %>
