@@ -31,7 +31,7 @@ font-weight:bold;
 <body>
 <% Puzzle p = new Puzzle(); 
    Random rnd = new Random(); %>
-<table style="width:360px; height:360px; align:center; border:2px solid black; margin-left:auto; margin-right:auto">
+<table style="width:360px; height:405px; align:center; border:2px solid black; margin-left:auto; margin-right:auto">
 <% for (int tr : new Range(3)) {%>
 <tr>
 	<% for (int tc : new Range(3)) { %>

@@ -2,6 +2,7 @@ package org.mike.puzzle;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import org.mike.util.Range;
 
@@ -13,6 +14,7 @@ public class Puzzle {
 	
 	// this is the puzzle
 	Integer[][] puzzle;
+	boolean[][] show = new boolean[9][9];
 	
 	public Puzzle() {
 		/*
@@ -42,7 +44,15 @@ public class Puzzle {
 			catch (NoSolutionException e) {
 			}
 		}
+		
+		Random random = new Random();
+		for (int r : new Range(9)) {
+			for (int c : new Range(9)) {
+				show[r][c] = random.nextFloat() < .35 ? true : false;
+			}
+		}
 	}
+	
 
 	void fillbox(int rb, int cb) {
 		Integer[] boxnums = Range.shuffleRange(1,10).toArray(new Integer[0]);
@@ -186,7 +196,7 @@ public class Puzzle {
 	}
 	
 	public String puzzleElement(int row, int column) {
-		return Integer.toString(puzzleInt(row, column));
+		return show[row][column] ? Integer.toString(puzzleInt(row, column)) : " ";
 	}
 
 	public Integer[][] toArray() {
