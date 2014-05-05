@@ -12,7 +12,7 @@ public class Puzzle {
 	 */
 	
 	// this is the puzzle
-	Integer[][] puzzle = new Integer[9][9];
+	Integer[][] puzzle;
 	
 	public Puzzle() {
 		/*
@@ -22,24 +22,26 @@ public class Puzzle {
 		 * fixbox computes the box based on all the other rows and columns
 		 * 
 		 */
-		try {
-			for (int b : new Range(3)) {
-				fixbox(b, b);
+		while (true) {
+			puzzle = new Integer[9][9];
+			try {
+				fillbox(0,0);
+				
+				fixbox(1,0);
+				fixbox(0,1);
+				fixbox(1,1);
+				
+				fixbox(2,0);
+				fixbox(2,1);
+				fixbox(0,2);
+				fixbox(1,2);
+				fixbox(2,2);
+				
+				break;
 			}
-			for (int r: new Range(3)) {
-				for (int c : new Range(3)) {
-					if (r != c) {
-						fixbox(r, c);
-					}
-				}
+			catch (NoSolutionException e) {
 			}
-
 		}
-		catch (NoSolutionException e) {
-			System.out.println("Bad karma");
-		}
-		
-		
 	}
 
 	void fillbox(int rb, int cb) {
@@ -55,6 +57,9 @@ public class Puzzle {
 	
 	public class PossibleElem extends HashSet<Integer> implements Comparable<PossibleElem> {
 
+
+		private static final long serialVersionUID = 2450400441412942120L;
+		
 		int row;
 		int column;
 		
@@ -119,6 +124,21 @@ public class Puzzle {
 						pelems[pr][pc].remove(puzzle[r][c]);
 					}
 				}
+			}
+		}
+		// First check:  make sure the union of the all the sets contains 9 elements
+		HashSet<Integer> possibleUnion = new HashSet<>();
+		for (PossibleElem e : pqueue) {
+			possibleUnion.addAll(e);
+		}
+		if (possibleUnion.size() != 9) {
+			throw new NoSolutionException("The box does not have all the numbers");
+		}
+		
+		// second check:  See if any of the cells have empty sets
+		for (PossibleElem e : pqueue) {
+			if (e.isEmpty()) {
+				throw new NoSolutionException("Empty Cell at " + e.getRow() + ", " + e.getColumn());
 			}
 		}
 		

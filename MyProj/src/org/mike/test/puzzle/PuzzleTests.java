@@ -18,12 +18,14 @@ public class PuzzleTests {
 	public void setup() {
 		Puzzle p = new Puzzle();
 		puzzle = p.toArray();
+		/*
 		for (int r : new Range(9)) {
 			for (int c : new Range(9)) {
 				System.out.print(puzzle[r][c] == null ? "  " : puzzle[r][c] + " ");
 			}
 			System.out.println();
 		}
+		*/
 	}
 	
 	@Test
