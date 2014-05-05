@@ -15,19 +15,27 @@ public class Puzzle {
 	// this is the puzzle
 	Integer[][] puzzle;
 	boolean[][] show = new boolean[9][9];
+	int tries = 0;
+	static int MAX_TRIES = 1000; 
 	
-	public Puzzle() {
+	/**
+	 * A new sodoku puzzle.  This will try to create a random puzzle, but if it exceeds the
+	 * try limit (currently 1000) it will fail
+	 * @throws NoSolutionException Could not create a puzzle in maxium try count
+	 */
+	public Puzzle() throws NoSolutionException {
 		/*
 		 * Build a puzzle. This proceeds as follows:
 		 * There are two main routines: fillbox and fixbox
-		 * fillbox fills the box with random numbers.  We will use this on the diagonal boxes
-		 * fixbox computes the box based on all the other rows and columns
+		 * fillbox fills the box with random numbers.  We will use this on the first box,
+		 * then try combinations of fixbox for the rest, until we get a valid puzzle.
+		 * If we can't get one in 1000 tries, give up
 		 * 
 		 */
+		puzzle = new Integer[9][9];
+		fillbox(0,0);
 		while (true) {
-			puzzle = new Integer[9][9];
 			try {
-				fillbox(0,0);
 				
 				fixbox(1,0);
 				fixbox(0,1);
@@ -42,6 +50,20 @@ public class Puzzle {
 				break;
 			}
 			catch (NoSolutionException e) {
+				tries++;
+				
+				// reset the puzzle.  copy only the box at 0,0
+				Integer[][] oldPuzzle = puzzle;
+				puzzle = new Integer[9][9];
+				for (int r : new Range(3)) {
+					for (int c : new Range(3)) {
+						puzzle[r][c] = oldPuzzle[r][c];
+					}
+				}
+						
+				if (tries >= MAX_TRIES) {
+					throw new NoSolutionException("Exceded max tries of " + MAX_TRIES, e);
+				}
 			}
 		}
 		
@@ -54,6 +76,9 @@ public class Puzzle {
 	}
 	
 
+	public int getTries() {
+		return tries;
+	}
 	void fillbox(int rb, int cb) {
 		Integer[] boxnums = Range.shuffleRange(1,10).toArray(new Integer[0]);
 		int cur = 0;
@@ -91,6 +116,12 @@ public class Puzzle {
 
 		public int getColumn() {
 			return column;
+		}
+		
+		public Integer pickVal() {
+			Random r = new Random();
+			Integer[] vals = toArray(new Integer[0]);
+			return vals[r.nextInt(vals.length)];
 		}
 		
 	}
@@ -166,7 +197,7 @@ public class Puzzle {
 			}
 			
 			// pick an element.  I guess we'll get an iterator, and choose the first one
-			int val = elem.iterator().next();
+			Integer val = elem.pickVal();
 			
 			// set this in the puzzle, remove it from needed and the rest of the sets
 			puzzle[elem.getRow()][elem.getColumn()] = val;

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mike.puzzle.NoSolutionException;
 import org.mike.puzzle.Puzzle;
 import org.mike.util.Range;
 
@@ -14,22 +15,8 @@ public class PuzzleTests {
 
 	Integer[][] puzzle;
 	
-	@Before
-	public void setup() {
-		Puzzle p = new Puzzle();
-		puzzle = p.toArray();
-		/*
-		for (int r : new Range(9)) {
-			for (int c : new Range(9)) {
-				System.out.print(puzzle[r][c] == null ? "  " : puzzle[r][c] + " ");
-			}
-			System.out.println();
-		}
-		*/
-	}
 	
-	@Test
-	public void testColums() {
+	public void testColumns() {
 		for (int c : new Range(9)) {
 			Set<Integer> nums = new HashSet<>(Range.rangeList(1,10));
 			for (int r : new Range(9)) {
@@ -42,7 +29,6 @@ public class PuzzleTests {
 		}
 	}
 
-	@Test
 	public void testRows() {
 		for (int r : new Range(9)) {
 			Set<Integer> nums = new HashSet<>(Range.rangeList(1,10));
@@ -56,7 +42,6 @@ public class PuzzleTests {
 		}
 	}
 
-	@Test
 	public void testBoxes() {
 		for (int tr : new Range(3)) {
 			for (int tc : new Range(3)) {
@@ -74,7 +59,18 @@ public class PuzzleTests {
 		}
 	}
 	
-	
+	@Test
+	public void testPuzzle() throws NoSolutionException
+	{
+		for (int i : new Range(1000)) {
+			Puzzle p = new Puzzle();
+			puzzle = p.toArray();
+			testColumns();
+			testRows();
+			testBoxes();
+		}
+		
+	}
 	private void printDups(Set<Integer> nums) {
 		for (int i : nums) {
 			//System.out.print(" "+i);
