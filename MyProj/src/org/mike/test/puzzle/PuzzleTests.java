@@ -12,12 +12,18 @@ import org.mike.util.Range;
 
 public class PuzzleTests {
 
-	int[][] puzzle;
+	Integer[][] puzzle;
 	
 	@Before
 	public void setup() {
 		Puzzle p = new Puzzle();
 		puzzle = p.toArray();
+		for (int r : new Range(9)) {
+			for (int c : new Range(9)) {
+				System.out.print(puzzle[r][c] == null ? "  " : puzzle[r][c] + " ");
+			}
+			System.out.println();
+		}
 	}
 	
 	@Test
@@ -69,9 +75,9 @@ public class PuzzleTests {
 	
 	private void printDups(Set<Integer> nums) {
 		for (int i : nums) {
-			System.out.print(" "+i);
+			//System.out.print(" "+i);
 		}
-		System.out.println();
+		//System.out.println();
 	}
 
 }
