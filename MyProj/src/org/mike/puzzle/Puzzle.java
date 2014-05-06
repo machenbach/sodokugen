@@ -85,6 +85,7 @@ public class Puzzle {
 			}
 		}
 		
+		
 		Random random = new Random();
 		for (int r : new Range(9)) {
 			for (int c : new Range(9)) {
@@ -93,10 +94,27 @@ public class Puzzle {
 		}
 	}
 	
+	
+	void buildShow() {
+		// we hide each number at the same probability
+		int[] numRatio = new int[9];
+		for (int i : new Range(9)) {
+			numRatio[i] = showRatio;
+		}
+
+		Random random = new Random();
+		for (int r : new Range(9)) {
+			for (int c : new Range(9)) {
+				show[r][c] = random.nextInt(100) <= numRatio[puzzle[r][c] -1] ? true : false;
+			}
+		}
+		
+	}
 
 	public int getTries() {
 		return tries;
 	}
+	
 	void fillbox(int rb, int cb) {
 		Integer[] boxnums = Range.shuffleRange(1,10).toArray(new Integer[0]);
 		int cur = 0;
@@ -108,7 +126,7 @@ public class Puzzle {
 				
 	}
 	
-	public class PossibleElem extends HashSet<Integer> implements Comparable<PossibleElem> {
+	class PossibleElem extends HashSet<Integer> implements Comparable<PossibleElem> {
 
 
 		private static final long serialVersionUID = 2450400441412942120L;
