@@ -69,7 +69,7 @@ public class Puzzle {
 				// If we can't fill in this time, increment the try counter
 				tries++;
 				
-				// reset the puzzle.  Null out everything except for box 0, 0
+				// reset the puzzle.  Copy only the box at 0,0
 				Integer[][] oldPuzzle = puzzle;
 				puzzle = new Integer[9][9];
 				for (int r : new Range(3)) {
