@@ -10,6 +10,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+@media print {
+	footer {page-break-after:always;}
+}
 table, tr, td
 {
 padding:0;
@@ -41,6 +44,28 @@ font-weight:bold;
 			<tr>
 			<% for (int c : new Range(3)) { %>
 				<td><%= p.puzzleElement(tr*3 + r, tc*3 + c)  %></td>
+			<% } %>
+			</tr>
+		<% } %>
+	</table>
+	</td>
+	<% } %>
+</tr>
+<%} %>
+</table>
+
+<% for (int i : new Range(40)) { %><br/><% } %> 
+
+<table style="width:360px; height:360px; align:center; border:2px solid black; margin-left:auto; margin-right:auto;">
+<% for (int tr : new Range(3)) {%>
+<tr>
+	<% for (int tc : new Range(3)) { %>
+	<td>
+	<table>
+		<% for (int r : new Range(3)) { %>
+			<tr>
+			<% for (int c : new Range(3)) { %>
+				<td><%= p.puzzleSolution(tr*3 + r, tc*3 + c)  %></td>
 			<% } %>
 			</tr>
 		<% } %>

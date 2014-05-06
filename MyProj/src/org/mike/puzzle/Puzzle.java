@@ -245,9 +245,12 @@ public class Puzzle {
 	}
 	
 	public String puzzleElement(int row, int column) {
-		return show[row][column] ? Integer.toString(puzzleInt(row, column)) : " ";
+		return show[row][column] ? puzzleInt(row, column).toString() : " ";
 	}
 
+	public String puzzleSolution(int row, int column) {
+		return puzzleInt(row, column).toString();
+	}
 	public Integer[][] toArray() {
 		return puzzle;
 	}
