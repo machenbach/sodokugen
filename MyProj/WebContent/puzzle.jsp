@@ -16,8 +16,8 @@ padding:0;
 border-collapse:collapse;
 text-align:center;
 border: 1px solid black;
-width:45px;
-height:45px;
+width:40px;
+height:40px;
 }
 table {
 width:100%;
@@ -31,7 +31,7 @@ font-weight:bold;
 <body>
 <% Puzzle p = new Puzzle(); 
    Random rnd = new Random(); %>
-<table style="width:360px; height:405px; align:center; border:2px solid black; margin-left:auto; margin-right:auto">
+<table style="width:360px; height:360px; align:center; border:2px solid black; margin-left:auto; margin-right:auto">
 <% for (int tr : new Range(3)) {%>
 <tr>
 	<% for (int tc : new Range(3)) { %>
@@ -40,7 +40,7 @@ font-weight:bold;
 		<% for (int r : new Range(3)) { %>
 			<tr>
 			<% for (int c : new Range(3)) { %>
-				<td><%= p.puzzleElement(tr * 3 + r, tc *3 + c)  %></td>
+				<td><%= p.puzzleElement(tr*3 + r, tc*3 + c)  %></td>
 			<% } %>
 			</tr>
 		<% } %>

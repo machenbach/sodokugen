@@ -7,33 +7,49 @@ import java.util.Random;
 import org.mike.util.Range;
 
 public class Puzzle {
-	/*
-	 * The basis array is a basic puzzle, with all squares correct.  We will 
-	 * create a (correct) random mapping of the basis space
-	 */
-	
-	// this is the puzzle
+	// the filled out puzzle
 	Integer[][] puzzle;
+	// whether or not to show the square
 	boolean[][] show = new boolean[9][9];
+
+	// Solution retry.  We try to construct a random puzzle.  If an attempt fails, reset and
+	// try again.  Blow up after we hit this limit.  Measurements have shown this is about
+	// twice as many tries as we need
+	static int MAX_TRIES = 500; 
 	int tries = 0;
-	static int MAX_TRIES = 1000; 
+	
+	// what percent (* 100) of squares to show
+	static int SHOW_DEFAULT = 40;
+	int showRatio;
 	
 	/**
 	 * A new sodoku puzzle.  This will try to create a random puzzle, but if it exceeds the
-	 * try limit (currently 1000) it will fail
+	 * try limit it will fail
 	 * @throws NoSolutionException Could not create a puzzle in maxium try count
 	 */
 	public Puzzle() throws NoSolutionException {
+		this(SHOW_DEFAULT);
+	}
+	
+	
+	public Puzzle(int showRatio) throws NoSolutionException {
+		// save the show ratio
+		this.showRatio = showRatio;
+		
+		
 		/*
 		 * Build a puzzle. This proceeds as follows:
 		 * There are two main routines: fillbox and fixbox
-		 * fillbox fills the box with random numbers.  We will use this on the first box,
+		 * fillbox fills a box with random numbers.  We will use this on the first box,
 		 * then try combinations of fixbox for the rest, until we get a valid puzzle.
-		 * If we can't get one in 1000 tries, give up
+		 * If we can't get one in MAX_TRIES tries, give up
 		 * 
 		 */
+		// The basics for this puzzle: box 0, 0
 		puzzle = new Integer[9][9];
 		fillbox(0,0);
+		
+		// Now try filling in the other boxes
 		while (true) {
 			try {
 				
@@ -50,9 +66,10 @@ public class Puzzle {
 				break;
 			}
 			catch (NoSolutionException e) {
+				// If we can't fill in this time, increment the try counter
 				tries++;
 				
-				// reset the puzzle.  copy only the box at 0,0
+				// reset the puzzle.  Null out everything except for box 0, 0
 				Integer[][] oldPuzzle = puzzle;
 				puzzle = new Integer[9][9];
 				for (int r : new Range(3)) {
@@ -60,7 +77,8 @@ public class Puzzle {
 						puzzle[r][c] = oldPuzzle[r][c];
 					}
 				}
-						
+				
+				// blow up if we have to
 				if (tries >= MAX_TRIES) {
 					throw new NoSolutionException("Exceded max tries of " + MAX_TRIES, e);
 				}
@@ -70,7 +88,7 @@ public class Puzzle {
 		Random random = new Random();
 		for (int r : new Range(9)) {
 			for (int c : new Range(9)) {
-				show[r][c] = random.nextFloat() < .35 ? true : false;
+				show[r][c] = random.nextInt(100) <= showRatio ? true : false;
 			}
 		}
 	}
